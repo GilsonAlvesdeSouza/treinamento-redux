@@ -1,10 +1,12 @@
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
-function Home({ usuario, setName, increment }) {
+function Home() {
   const [inputName, SetInputName] = useState("");
   const history = useHistory();
+  const { name, count } = useSelector((state) => state.usuario);
+  const dispatch = useDispatch();
 
   const handleButton = () => {
     setTimeout(() => history.replace("/sobre"), 2000);
@@ -16,24 +18,43 @@ function Home({ usuario, setName, increment }) {
 
   const handleKeyInput = (e) => {
     if (e.key === "Enter" && inputName !== "") {
-      setName(inputName);
+      dispatch({
+        type: "SET_NAME",
+        payload: { name: inputName },
+      });
       SetInputName("");
     }
   };
 
   const handleButtonInput = () => {
     if (inputName !== "") {
-      setName(inputName);
+      dispatch({
+        type: "SET_NAME",
+        payload: { name: inputName },
+      });
+      SetInputName("");
     }
   };
 
   const handleIncrement = () => {
-    increment(usuario.count);
+    dispatch({
+      type: "COUNT_UP",
+      payload: { count: count + 1 },
+    });
+  };
+
+  const handleDecrement = () => {
+    if (count > 0) {
+      dispatch({
+        type: "COUNT_DOWN",
+        payload: { count: count - 1 },
+      });
+    }
   };
 
   return (
     <div>
-      <h1>Seja bem vindo! {usuario.name}</h1>
+      <h1>Seja bem vindo! {name}</h1>
       <input
         type="text"
         value={inputName}
@@ -41,9 +62,11 @@ function Home({ usuario, setName, increment }) {
         onKeyUp={(e) => handleKeyInput(e)}
       />
       <button onClick={handleButtonInput}>Mudar Nome</button>
-      <p>Nome: {usuario.name}</p>
-      <p>Contador: {usuario.count}</p>
+      <p>Nome: {name}</p>
+      <label>Contador: {count}</label>
       <button onClick={handleIncrement}>+1</button>
+      <button onClick={handleDecrement}>-1</button>
+      <br />
       <button onClick={handleButton}>ir para a página sobre</button>
     </div>
   );
@@ -55,23 +78,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setName: (newName) =>
-      dispatch({
-        type: "SET_NAME",
-        payload: { name: newName },
-      }),
-    /* parte 1 de outra forma de se fazer a parte 2 esta no arquivo UsuarioReducer.js na linha 10 */
-    // increment: () => dispatch({
-    //   type: 'COUNT_UP',
-    // }),
-    increment: (count) =>
-      dispatch({
-        type: "COUNT_UP",
-        payload: { count: count + 1 },
-      }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
