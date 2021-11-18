@@ -63,19 +63,14 @@ function Home() {
       />
       <button onClick={handleButtonInput}>Mudar Nome</button>
       <p>Nome: {name}</p>
-      <label>Contador: {count}</label>
+      <p>Contador: {count}</p>
       <button onClick={handleIncrement}>+1</button>
       <button onClick={handleDecrement}>-1</button>
+      <br />
       <br />
       <button onClick={handleButton}>ir para a página sobre</button>
     </div>
   );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    usuario: state.usuario,
-  };
-};
 
 export default Home;

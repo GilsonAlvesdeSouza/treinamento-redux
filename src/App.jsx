@@ -4,7 +4,7 @@ import { Container, NavMenu } from "./App.Style";
 import { Clientes, Home, NotFound, Sobre, Login } from "./pages";
 
 function App() {
-  const [IsLogged, setIslloged] = useState(false);
+  const [IsLogged, setIslloged] = useState(true);
 
   const logar = () => {
     setIslloged(!IsLogged);
